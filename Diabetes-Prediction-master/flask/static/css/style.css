@@ -1,0 +1,223 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+
+.btn {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+  padding: 4px 10px 4px;
+  margin-bottom: 0;
+  font-size: 13px;
+  line-height: 18px;
+  color: #333333;
+  text-align: center;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+  vertical-align: middle;
+  background-color: #f5f5f5;
+  background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
+  background-image: -ms-linear-gradient(top, #ffffff, #e6e6e6);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6));
+  background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
+  background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
+  background-image: linear-gradient(top, #ffffff, #e6e6e6);
+  background-repeat: repeat-x;
+  filter: progid:dximagetransform.microsoft.gradient(startColorstr=#ffffff, endColorstr=#e6e6e6, GradientType=0);
+  border-color: rgba(0, 0, 0, 0.1);
+  border: 1px solid #e6e6e6;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+}
+.btn:hover,
+.btn:active,
+.btn.active,
+.btn.disabled,
+.btn[disabled] {
+  background-color: #e6e6e6;
+}
+.btn-large {
+  padding: 9px 14px;
+  font-size: 15px;
+  line-height: normal;
+  border-radius: 5px;
+}
+.btn-primary,
+.btn-primary:hover {
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  color: #ffffff;
+}
+.btn-primary.active {
+  color: rgba(255, 255, 255, 0.75);
+}
+.btn-primary {
+  background-color: #4a77d4;
+  background-image: -moz-linear-gradient(top, #6eb6de, #4a77d4);
+  background-image: -ms-linear-gradient(top, #6eb6de, #4a77d4);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#6eb6de), to(#4a77d4));
+  background-image: -webkit-linear-gradient(top, #6eb6de, #4a77d4);
+  background-image: -o-linear-gradient(top, #6eb6de, #4a77d4);
+  background-image: linear-gradient(top, #6eb6de, #4a77d4);
+  border: 1px solid #3762bc;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary.active,
+.btn-primary.disabled,
+.btn-primary[disabled] {
+  filter: none;
+  background-color: #4a77d4;
+}
+.btn-block {
+  width: 100%;
+  display: block;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  font-family: 'Open Sans', sans-serif;
+  color: #fff;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background:
+    linear-gradient(to bottom, rgba(5, 20, 60, 0.7), rgba(5, 20, 60, 0.9)),
+    url("/static/img/diabetes-bg.jpg") center center / cover no-repeat fixed;
+}
+
+.login {
+  width: 900px;
+  max-width: 95%;
+  margin: 40px auto;
+  background: rgba(8, 22, 60, 0.85);
+  border-radius: 18px;
+  padding: 30px 35px;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+}
+
+.login h1 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 32px;
+  text-align: left;
+  text-shadow: 0 0 10px rgba(0,0,0,0.4);
+}
+
+.subtitle {
+  text-align: left;
+  font-size: 14px;
+  opacity: 0.85;
+  margin-bottom: 20px;
+}
+
+.app-layout {
+  display: grid;
+  grid-template-columns: 1.1fr 1.4fr;
+  gap: 30px;
+}
+
+.hero-panel {
+  border-radius: 16px;
+  padding: 20px;
+  background: radial-gradient(circle at top, rgba(255,255,255,0.15) 0, transparent 60%),
+              linear-gradient(145deg, rgba(108, 186, 255, 0.18), rgba(3, 219, 191, 0.12));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+.hero-title {
+  font-size: 22px;
+  margin-bottom: 6px;
+}
+.hero-text {
+  font-size: 14px;
+  line-height: 1.5;
+  opacity: 0.9;
+}
+.hero-badges {
+  margin-top: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.hero-badge {
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+.main-panel {
+  border-radius: 16px;
+  padding: 18px 20px 22px;
+  background: rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+input {
+  width: 100%;
+  margin-bottom: 10px;
+  background: rgba(0,0,0,0.3);
+  border: none;
+  outline: none;
+  padding: 10px;
+  font-size: 14px;
+  color: #fff;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: inset 0 -3px 15px rgba(0,0,0,0.3), 0 1px 1px rgba(255,255,255,0.1);
+  transition: box-shadow .3s ease, border-color .3s ease;
+}
+input:focus {
+  border-color: #6eb6de;
+  box-shadow: inset 0 -4px 18px rgba(0,0,0,0.45), 0 0 0 1px rgba(110,182,222,0.6);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  font-size: 13px;
+  background: rgba(0,0,0,0.25);
+}
+table th, table td {
+  border: 1px solid rgba(255,255,255,0.12);
+  padding: 6px 8px;
+  text-align: center;
+}
+table th {
+  background: rgba(0,0,0,0.5);
+  font-weight: 600;
+}
+
+.batch-results {
+  max-height: none;
+  overflow-y: visible;
+  margin-top: 10px;
+}
+
+@media (max-width: 960px) {
+  .app-layout {
+    grid-template-columns: 1fr;
+  }
+  .login {
+    margin: 20px auto;
+  }
+  body {
+    align-items: flex-start;
+  }
+}

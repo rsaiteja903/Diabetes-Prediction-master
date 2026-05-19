@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Diabetes Predictor</title>
+  <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+  <style>
+    .tab-buttons {
+      margin-bottom: 16px;
+      text-align: left;
+    }
+    .tab-buttons button {
+      margin-right: 6px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: none;
+      background: rgba(255,255,255,0.9);
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 13px;
+    }
+    .tab-buttons button.active {
+      background: #4CAF50;
+      color: #fff;
+    }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .error {
+      color: #ffb4b4;
+      margin-top: 6px;
+      font-size: 13px;
+    }
+    .result {
+      margin-top: 10px;
+      font-weight: bold;
+      font-size: 15px;
+    }
+  </style>
+
+  <script>
+    function showTab(tab) {
+      const singleTab = document.getElementById("single-tab");
+      const batchTab = document.getElementById("batch-tab");
+      const btnSingle = document.getElementById("btn-single");
+      const btnBatch = document.getElementById("btn-batch");
+
+      singleTab.classList.toggle("active", tab === "single");
+      batchTab.classList.toggle("active", tab === "batch");
+      btnSingle.classList.toggle("active", tab === "single");
+      btnBatch.classList.toggle("active", tab === "batch");
+    }
+
+    function validateSingleForm(event) {
+      const errBox = document.getElementById("single-error");
+      errBox.textContent = "";
+
+      function parseField(id, label, min, max) {
+        const el = document.getElementById(id);
+        const valStr = el.value.trim();
+        if (!valStr) {
+          throw label + " is required.";
+        }
+        const val = parseFloat(valStr);
+        if (isNaN(val)) {
+          throw label + " must be a number.";
+        }
+        if (val < min || val > max) {
+          throw label + " must be between " + min + " and " + max + ".";
+        }
+        return val;
+      }
+
+      try {
+        parseField("glucose", "Glucose", 40, 400);
+        parseField("insulin", "Insulin", 0, 900);
+        parseField("bmi", "BMI", 10, 70);
+        parseField("age", "Age", 1, 120);
+        return true;
+      } catch (msg) {
+        errBox.textContent = msg;
+        event.preventDefault();
+        return false;
+      }
+    }
+
+    function downloadBatchCSV() {
+      const textarea = document.getElementById("batch-csv-data");
+      if (!textarea) return;
+      const csv = textarea.value;
+      if (!csv) return;
+
+      const blob = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'diabetes_predictions.csv';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    window.onload = function () {
+      var active = "{{ active_tab|default('single') }}";
+      showTab(active);
+    };
+  </script>
+</head>
+
+<body>
+  <div class="login">
+    <h1>Diabetes Predictor</h1>
+
+    <div class="app-layout">
+      <div class="hero-panel">
+        <div class="hero-text">
+          This tool uses a machine learning model trained on a diabetes dataset
+          to estimate your risk based on clinical indicators like glucose,
+          insulin, BMI and age.
+          <br><br>
+          Always consult a healthcare professional for medical advice or
+          diagnosis. This app is for educational and demonstration purposes.
+        </div>
+      </div>
+
+      <div class="main-panel">
+        <div class="tab-buttons">
+          <button id="btn-single" type="button" onclick="showTab('single')">
+            Single Prediction
+          </button>
+          <button id="btn-batch" type="button" onclick="showTab('batch')">
+            Batch Upload
+          </button>
+        </div>
+
+        <!-- SINGLE PREDICTION TAB -->
+        <div id="single-tab" class="tab-content">
+          <form action="{{ url_for('predict') }}" method="post" onsubmit="return validateSingleForm(event);">
+            <input type="text" id="glucose" name="glucose" placeholder="🩸 Glucose Level (mg/dL)" required="required" />
+            <input type="text" id="insulin" name="insulin" placeholder="💉 Insulin" required="required" />
+            <input type="text" id="bmi" name="bmi" placeholder="⚖️ BMI" required="required" />
+            <input type="text" id="age" name="age" placeholder="👤 Age" required="required" />
+
+            <button type="submit" class="btn btn-primary btn-block btn-large">
+              Predict
+            </button>
+          </form>
+
+          <div id="single-error" class="error"></div>
+
+          {% if prediction_text %}
+            <div class="result">{{ prediction_text }}</div>
+          {% endif %}
+
+          {% if history %}
+            <h3 style="margin-top:18px; font-size:16px;">Recent Predictions</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Glucose</th>
+                  <th>Insulin</th>
+                  <th>BMI</th>
+                  <th>Age</th>
+                  <th>Result</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for h in history %}
+                  <tr>
+                    <td>{{ h.Glucose }}</td>
+                    <td>{{ h.Insulin }}</td>
+                    <td>{{ h.BMI }}</td>
+                    <td>{{ h.Age }}</td>
+                    <td>{{ h.Prediction_Text }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          {% endif %}
+        </div>
+
+        <!-- BATCH UPLOAD TAB -->
+        <div id="batch-tab" class="tab-content">
+          <p style="font-size:14px; opacity:0.9;">
+            Upload a CSV file with columns:
+            <b>Glucose, Insulin, BMI, Age</b>. You’ll see a preview and can
+            download the full results.
+          </p>
+
+          <form action="{{ url_for('batch_predict') }}" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" accept=".csv" required="required" />
+            <button type="submit" class="btn btn-primary btn-block btn-large">
+              Upload &amp; Predict
+            </button>
+          </form>
+
+          {% if batch_error %}
+            <div class="error">{{ batch_error }}</div>
+          {% endif %}
+
+          {% if batch_table %}
+            <div class="batch-results">
+              {{ batch_table|safe }}
+            </div>
+            <textarea id="batch-csv-data" style="display:none;">{{ batch_csv }}</textarea>
+            <button type="button" class="btn btn-primary btn-block btn-large" onclick="downloadBatchCSV()">
+              Download Results CSV
+            </button>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
