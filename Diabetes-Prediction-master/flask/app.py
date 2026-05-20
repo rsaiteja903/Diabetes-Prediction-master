@@ -3,9 +3,7 @@ import pandas as pd
 from flask import Flask, request, render_template, session
 import pickle
 
-app = Flask(__name__)
 
-app.secret_key = "super_secret_key_change_me"
 
 model = pickle.load(open('model.pkl', 'rb'))
 
@@ -126,4 +124,6 @@ def batch_predict():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app = Flask(__name__)
+    
+    app.secret_key = "super_secret_key_change_me"
